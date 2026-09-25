@@ -1,0 +1,26 @@
+# Local secrets and runtime configuration
+**/application.properties
+!**/application.properties.example
+**/.env
+**/.env.*
+!**/.env.example
+*.env
+*.pem
+*.key
+*.p12
+*.jks
+
+# Build output
+**/target/
+target/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS files
+.DS_Store
+Thumbs.db
