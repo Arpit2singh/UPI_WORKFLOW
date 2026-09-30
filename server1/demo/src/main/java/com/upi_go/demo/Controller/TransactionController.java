@@ -93,6 +93,7 @@ public List<TransactionEntity> transferAsyncMoney(@RequestParam String senderAcc
     }
     catch(Exception e){
        System.out.println("Error in executing payment: " + e.getMessage()) ;
+       System.err.println("error here ");
     }
 
     try{
