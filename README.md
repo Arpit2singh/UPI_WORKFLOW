@@ -83,9 +83,7 @@ server2/demo   Simulated bank service
 
 Live `application.properties`, `.env` files, credentials, private keys, and build output are ignored by Git. Review `git status` and `git diff --cached` before every push.
 
-## Credential safety
 
-Do not commit passwords, database URLs containing credentials, AWS access keys, tokens, or private keys. The original local credentials must be rotated or revoked before publishing this repository because they have been exposed during development. Remove any compromised AWS access key and secret, rotate the database password, and update local configuration with the replacement values.
 
 ## Run
 
