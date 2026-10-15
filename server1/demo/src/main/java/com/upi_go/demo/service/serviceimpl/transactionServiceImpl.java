@@ -67,6 +67,9 @@ public class transactionServiceImpl implements transactionService {
     //    @CircuitBreaker(name="bankService", fallbackMethod = "bankFallBack")
         // callBankService() ;
        String response = bankClientService.callBankService() ;
+       if ("BANK_UNAVAILABLE".equals(response)) {
+    throw new RuntimeException("Payment failed: Bank service unavailable");
+}
        System.out.println("Response from Bank Service: " + response);
        BigDecimal senderNewAmount = senderAmount.subtract(transaction.getAmount()) ; 
        BigDecimal receiverAmount = transaction.getReceiverBankAccount().getBalance() ; 

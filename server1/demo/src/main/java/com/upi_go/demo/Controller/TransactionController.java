@@ -13,11 +13,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
+import java.util.UUID;
+import com.upi_go.demo.Dto.response.PaymentMessage ; 
 import com.upi_go.demo.service.EmailService;
 import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
-
-
+import com.upi_go.demo.publisher.PaymentPublisher;
+import com.upi_go.demo.ExceptionHandler.paymentException;
 
 
 @RestController
@@ -34,11 +36,24 @@ public class TransactionController {
     private ExecutorService executor = Executors.newFixedThreadPool(2) ; 
     private ExecutorService emailExecutor = Executors.newFixedThreadPool(2) ;
  
-
+    @Autowired 
+    private PaymentPublisher paymentPublisher ;
 
 @PostMapping("/pay")
-public TransactionEntity  transferMoney(@RequestParam String senderAccountNumber , @RequestParam String receiverAccountNumber , @RequestParam BigDecimal amount){
-    return transactionService.transferMoney(senderAccountNumber , receiverAccountNumber , amount) ;
+public String transferMoney(@RequestParam String senderAccountNumber , @RequestParam String receiverAccountNumber , @RequestParam BigDecimal amount){
+    try{
+         PaymentMessage paymentMessage = new PaymentMessage() ;
+         paymentMessage.setSenderAccountNumber(senderAccountNumber) ;
+         paymentMessage.setReceiverAccountNumber(receiverAccountNumber) ;
+         paymentMessage.setAmount(amount) ;
+         paymentPublisher.publishPayement(paymentMessage) ;
+         return "Payment message published to RabbitMQ successfully" ;
+
+    }
+    catch(Exception e){
+         throw new paymentException("Error in publishing payment message to RabbitMQ: " + e.getMessage()) ;
+    }
+    // return transactionService.transferMoney(senderAccountNumber , receiverAccountNumber , amount) ;
 }
 
 @PostMapping("/payAsync")

@@ -14,12 +14,13 @@ public class bankClientServiceImpl {
   
     String url = "http://localhost:8081/bank/transfer" ;
     @CircuitBreaker(name="bankService", fallbackMethod = "bankFallBack")
-    String callBankService() {
+    public String callBankService() {
         return restTemplate.postForObject(url,null , String.class);     
     }
 
     private String bankFallBack(Exception e){
-        throw new RuntimeException("Bank open circuit: " + e.getMessage()) ;
+         System.out.println("Bank service unavailable: " + e.getMessage());
+    return "BANK_UNAVAILABLE";
     }
 
 
